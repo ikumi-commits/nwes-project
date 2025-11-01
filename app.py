@@ -11,19 +11,22 @@ from dotenv import load_dotenv
 
 
 # .envファイルをロードして環境変数を設定
-load_dotenv()
+#load_dotenv()
 
 # APIキーを環境変数から取得
 api_key = os.getenv("GOOGLE_API_KEY")
-if not api_key:
-    st.error("APIキーが設定されていません。Google CloudのAPIキーを設定してください。")
-    st.stop()
+genai.configure(api_key=api_key)
+
+#api_key = genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
+#if not api_key:
+#    st.error("APIキーが設定されていません。Google CloudのAPIキーを設定してください。")
+#    st.stop()
 
 # Gemini Client を作成
 # client = genai.Client(api_key=api_key)
 # Gemini APIを設定
 #genai.configure(api_key=api_key)
-genai.configure(api_key=api_key)
+#genai.configure(api_key=api_key)
 
 
 # CSVファイルを読み込む関数を実装してください。
@@ -100,21 +103,9 @@ def respond_with_gemini(query, results, texts, top_n=3):
     #プロンプトの生成
     prompt = f"以下のニュース記事を参考に質問に答えてください。\n\n質問: {query}\n\n関連記事:\n{context}"
     
-    #回答を生成（Gemeniで回答を生成）
-    #response = model.generate_content(prompt)
-
-    # Geminiモデルの初期化
-    model = genai.GenerativeModel("gemini-1.5-flash")  # or gemini-1.5-pro
+    model = genai.GenerativeModel("gemini-1.5-flash")  
     # コンテンツ生成
     response = model.generate_content(prompt)
-
-    # 生成AIで回答
-    #response = genai.generate_content(
-    #    model="gemini-2.5-flash",
-    #    contents=prompt
-    #)
-    #model = genai.GenerativeModel("gemini-1.5-flash")  # 最新モデル名に注意
-    #response = model.generate_content(prompt)
 
     # 生成された文章を返す
     return response.text 
