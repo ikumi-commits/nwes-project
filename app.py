@@ -7,7 +7,6 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sentence_transformers import SentenceTransformer
 import google.generativeai as genai
 from dotenv import load_dotenv
-#from google import genai
 
 
 # .envファイルをロードして環境変数を設定
@@ -16,21 +15,8 @@ from dotenv import load_dotenv
 # APIキーを環境変数から取得
 genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
 
-#api_key = genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
-#if not api_key:
-#    st.error("APIキーが設定されていません。Google CloudのAPIキーを設定してください。")
-#    st.stop()
-
-# Gemini Client を作成
-# client = genai.Client(api_key=api_key)
-# Gemini APIを設定
-#genai.configure(api_key=api_key)
-#genai.configure(api_key=api_key)
-
-
 # CSVファイルを読み込む関数を実装してください。
 @st.cache_data
-
 def load_data(csv_file_path):
     df = pd.read_csv(csv_file_path)
     return df
@@ -43,7 +29,7 @@ def build_tfidf_model(texts):
     return tfidf_matrix, vectorizer
 
 # SentenceTransformerの埋め込みモデルを取得する関数を実装してください。
-# SentenceTransformer=文字をベクトル化（word2vecは単語ベース、SentenceTransformerは文章ベース、違いは何か要確認）
+# SentenceTransformer=文字をベクトル化（word2vecは単語ベース、SentenceTransformerは文章ベース）
 @st.cache_resource
 def get_embedding_model():
     return SentenceTransformer("sonoisa/sentence-bert-base-ja-mean-tokens")
@@ -56,11 +42,9 @@ def build_embedding_model(texts):
     embeddings = model.encode(texts, show_progress_bar=True)
     return embeddings
 
-
 # ハイブリッド検索を行う関数を実装してください。（意味と単語の両方を加味した検索）
 def hybrid_search(query, tfidf_matrix, tfidf_vectorizer, embeddings):
     
-    #単語の類似度
     #ユーザの質問をベクトル化
     tfidf_query = tfidf_vectorizer.transform([query])
 
@@ -89,7 +73,6 @@ def display_chat_history():
     for msg in st.session_state.chat_history:
         with st.chat_message(msg["role"]):
             st.markdown(msg["content"])
-
 
 
 # Geminiモデルを使って応答を生成する関数を実装してください。
@@ -126,16 +109,12 @@ embeddings = build_embedding_model(texts)
 init_chat_history()
 display_chat_history()
 
-# タブの作成
-#tab_chat, tab_history = st.tabs(["チャット", "履歴"])
-
-#with tab_chat:
 user_input = st.chat_input("質問を入力してください")
 
 if user_input:
 
 # ユーザの画面に質問内容を表示
-# Streamlit で with は「どのUI要素の中に描画するか」を明示するために使われる
+# Streamlit で with は「どのUI要素の中に描画するか」を明示するために使用
     with st.chat_message("user"):
         st.markdown(user_input)
 
