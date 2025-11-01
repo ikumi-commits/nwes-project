@@ -93,9 +93,6 @@ def display_chat_history():
 # RAG部分
 def respond_with_gemini(query, results, texts, top_n=3):
 
-    #Gemeniモデルの呼び出し
-    #model = get_gemini_model()
-
     #類似度が高いn件の記事を呼び出し、１つの文章にまとめる
     context = "\n\n".join([texts[i] for i in results[:top_n]])
 
@@ -105,20 +102,22 @@ def respond_with_gemini(query, results, texts, top_n=3):
     #回答を生成（Gemeniで回答を生成）
     #response = model.generate_content(prompt)
 
+    # Geminiモデルの初期化
+    model = genai.GenerativeModel("gemini-1.5-flash")  
+
+    # コンテンツ生成
+    response = model.generate_content(prompt)
+
     # 生成AIで回答
-    response = genai.generate_content(
-        model="gemini-2.5-flash",
-        contents=prompt
-    )
+    #response = genai.generate_content(
+    #    model="gemini-2.5-flash",
+    #    contents=prompt
+    #)
     #model = genai.GenerativeModel("gemini-1.5-flash")  # 最新モデル名に注意
     #response = model.generate_content(prompt)
 
     # 生成された文章を返す
     return response.text 
-
-#    return response.text
-
-
 
 # Streamlitアプリのメイン
 st.title("news RAG System")
