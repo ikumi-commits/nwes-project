@@ -20,7 +20,10 @@ if not api_key:
     st.stop()
 
 # Gemini Client を作成
-client = genai.Client(api_key=api_key)
+# client = genai.Client(api_key=api_key)
+# Gemini APIを設定
+genai.configure(api_key=api_key)
+
 
 # CSVファイルを読み込む関数を実装してください。
 @st.cache_data
@@ -103,10 +106,12 @@ def respond_with_gemini(query, results, texts, top_n=3):
     #response = model.generate_content(prompt)
 
     # 生成AIで回答
-    response = client.models.generate_content(
-    model="gemini-2.5-flash",
-    contents=prompt
+    response = genai.generate_content(
+        model="gemini-2.5-flash",
+        contents=prompt
     )
+    #model = genai.GenerativeModel("gemini-1.5-flash")  # 最新モデル名に注意
+    #response = model.generate_content(prompt)
 
     # 生成された文章を返す
     return response.text 
