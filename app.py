@@ -7,7 +7,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sentence_transformers import SentenceTransformer
 import google.generativeai as genai
 from dotenv import load_dotenv
-from google import genai
+#from google import genai
 
 
 # .envファイルをロードして環境変数を設定
@@ -22,22 +22,12 @@ if not api_key:
 # Gemini Client を作成
 client = genai.Client(api_key=api_key)
 
-# Geminiモデルを取得する関数
-#@st.cache_resource
-#def get_gemini_model():
-    # Client に APIキーを渡してモデルを作成
-#    client = genai.Client(api_key=api_key)
-#    model = genai.GenerativeModel("gemini-2.5-flash", client=client)
-#    return model
-
-
 # CSVファイルを読み込む関数を実装してください。
 @st.cache_data
 
 def load_data(csv_file_path):
     df = pd.read_csv(csv_file_path)
     return df
-
 
 # TF-IDFモデルを構築する関数を実装してください。
 @st.cache_resource
