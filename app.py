@@ -103,7 +103,8 @@ def respond_with_gemini(query, results, texts, top_n=3):
     #response = model.generate_content(prompt)
 
     # Geminiモデルの初期化
-    model = genai.GenerativeModel("gemini-1.5-flash")  
+    model = genai.GenerativeModel("gemini-pro")
+ 
 
     # コンテンツ生成
     response = model.generate_content(prompt)
