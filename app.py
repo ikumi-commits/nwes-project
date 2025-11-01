@@ -14,8 +14,7 @@ from dotenv import load_dotenv
 #load_dotenv()
 
 # APIキーを環境変数から取得
-api_key = os.getenv("GOOGLE_API_KEY")
-genai.configure(api_key=api_key)
+genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
 
 #api_key = genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 #if not api_key:
@@ -103,12 +102,12 @@ def respond_with_gemini(query, results, texts, top_n=3):
     #プロンプトの生成
     prompt = f"以下のニュース記事を参考に質問に答えてください。\n\n質問: {query}\n\n関連記事:\n{context}"
     
-    model = genai.GenerativeModel("gemini-1.5-flash")  
     # コンテンツ生成
+    model = genai.GenerativeModel("gemini-2.5-flash")
     response = model.generate_content(prompt)
 
-    # 生成された文章を返す
-    return response.text 
+    # 生成された文章を返す    
+    return response.text
 
 # Streamlitアプリのメイン
 st.title("news RAG System")
