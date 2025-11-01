@@ -22,7 +22,8 @@ if not api_key:
 # Gemini Client を作成
 # client = genai.Client(api_key=api_key)
 # Gemini APIを設定
-genai.configure(api_key=api_key)
+#genai.configure(api_key=api_key)
+client = genai.Client(api_key=api_key)
 
 
 # CSVファイルを読み込む関数を実装してください。
@@ -103,11 +104,14 @@ def respond_with_gemini(query, results, texts, top_n=3):
     #response = model.generate_content(prompt)
 
     # Geminiモデルの初期化
-    model = genai.GenerativeModel("gemini-pro")
+    response = client.models.generate_content(
+    model="gemini-2.5-flash", contents="Explain how AI works in a few words"
+    )
+    #model = genai.GenerativeModel("gemini-pro")
  
 
     # コンテンツ生成
-    response = model.generate_content(prompt)
+    response = client.generate_content(prompt)
 
     # 生成AIで回答
     #response = genai.generate_content(
